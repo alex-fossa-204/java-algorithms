@@ -8,7 +8,7 @@ import java.util.Map;
 import java.util.stream.IntStream;
 
 @Slf4j
-class SearchTask {
+class BinarySearchTask {
 
     public static void main(String[] args) {
         var intArray = new int[]{1,2,3,4};

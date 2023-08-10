@@ -4,6 +4,9 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
 
+import java.util.List;
+import java.util.concurrent.Callable;
+import java.util.concurrent.Executors;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 
@@ -18,26 +21,20 @@ public class LegacyCounterMain {
                 legacyCounter, counterIncrementBorder, new ReentrantLock(), new ReentrantLock()
         );
 
-        Runnable runnableCounter = () -> {
-                multithreadingCounterAdapterInstance.incrementConcurrentCounter();
-                log.info("Текущий счетчик: counter = {}, thread = {}", multithreadingCounterAdapterInstance.getConcurrentCounter(), Thread.currentThread().getName());
+        Callable<Integer> runnableCounter = () -> {
+            multithreadingCounterAdapterInstance.incrementConcurrentCounter();
+            log.info("Текущий счетчик: counter = {}, thread = {}", multithreadingCounterAdapterInstance.getConcurrentCounter(), Thread.currentThread().getName());
+            return multithreadingCounterAdapterInstance.getConcurrentCounter();
         };
 
-        Thread threadCounter1 = new Thread(runnableCounter);
-        Thread threadCounter2 = new Thread(runnableCounter);
-        Thread threadCounter3 = new Thread(runnableCounter);
-        Thread threadCounter4 = new Thread(runnableCounter);
-
-        threadCounter1.start();
-        threadCounter2.start();
-        threadCounter3.start();
-        threadCounter4.start();
+        var execService = Executors.newFixedThreadPool(3);
 
         try {
-            threadCounter1.join();
-            threadCounter2.join();
-            threadCounter3.join();
-            threadCounter4.join();
+            execService.invokeAll(List.of(
+                    runnableCounter, runnableCounter, runnableCounter, runnableCounter
+            ));
+
+            execService.shutdown();
 
             var finalCounter = multithreadingCounterAdapterInstance.getConcurrentCounter();
             log.info("Результат вычисления счетчика: finalCounter = {}, thread = {}", finalCounter, Thread.currentThread().getName());

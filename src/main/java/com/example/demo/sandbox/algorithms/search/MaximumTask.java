@@ -41,9 +41,13 @@ class MaximumTask {
             var maximalValue = Integer.MIN_VALUE;
             var secondMaximum = Integer.MIN_VALUE;
             for (int item : sourceArray) {
-                if (item > maximalValue) {
+                var isCurrentValueMaximal = item > maximalValue;
+                if (isCurrentValueMaximal) {
                     secondMaximum = maximalValue;
                     maximalValue = item;
+                }
+                if (!isCurrentValueMaximal && item > secondMaximum) {
+                    secondMaximum = item;
                 }
             }
             return secondMaximum;

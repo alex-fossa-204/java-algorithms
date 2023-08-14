@@ -1,4 +1,4 @@
-package com.example.demo.stubFunctionality.entity;
+package com.alexfossa204.algorithms.stubFunctionality.entity;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

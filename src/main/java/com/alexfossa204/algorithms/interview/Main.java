@@ -1,4 +1,4 @@
-package com.example.demo.interview;
+package com.alexfossa204.algorithms.interview;
 
 import lombok.extern.slf4j.Slf4j;
 

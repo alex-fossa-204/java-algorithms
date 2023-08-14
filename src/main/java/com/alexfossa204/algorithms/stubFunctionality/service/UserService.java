@@ -1,9 +1,7 @@
-package com.example.demo.stubFunctionality.service;
+package com.alexfossa204.algorithms.stubFunctionality.service;
 
-import com.example.demo.stubFunctionality.entity.Role;
-import com.example.demo.stubFunctionality.entity.User;
-import lombok.AllArgsConstructor;
-import lombok.NoArgsConstructor;
+import com.alexfossa204.algorithms.stubFunctionality.entity.Role;
+import com.alexfossa204.algorithms.stubFunctionality.entity.User;
 
 import java.time.LocalDateTime;
 import java.util.List;

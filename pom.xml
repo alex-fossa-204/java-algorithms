@@ -11,8 +11,8 @@
     <groupId>com.example</groupId>
     <artifactId>java-algorithms</artifactId>
     <version>0.0.1-SNAPSHOT</version>
-    <name>demo</name>
-    <description>demo</description>
+    <name>java-algorithms</name>
+    <description>java-algorithms</description>
     <properties>
         <java.version>17</java.version>
     </properties>

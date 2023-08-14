@@ -1,7 +1,7 @@
-package com.example.demo.stubFunctionality.service;
+package com.alexfossa204.algorithms.stubFunctionality.service;
 
-import com.example.demo.stubFunctionality.entity.CreditRating;
-import com.example.demo.stubFunctionality.entity.User;
+import com.alexfossa204.algorithms.stubFunctionality.entity.CreditRating;
+import com.alexfossa204.algorithms.stubFunctionality.entity.User;
 
 import java.util.concurrent.CompletableFuture;
 

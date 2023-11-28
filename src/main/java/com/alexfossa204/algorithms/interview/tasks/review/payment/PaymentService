@@ -1,0 +1,80 @@
+package com.alexfossa204.algorithms.interview.tasks.review.payment;
+
+import jakarta.persistence.Entity;
+import jakarta.persistence.ManyToOne;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+@Slf4j
+@Service
+class PaymentService {
+
+    @Autowired
+    private PaymentRepository paymentRepository;
+
+    @Autowired
+    private ComissionRepository comissionRepository;
+
+    @Autowired
+    private UserRepository userRepository;
+
+    private NotificationRestClient notificationRestClient = new NotificationRestClient();
+
+    private CentralBankRestClient centralBankRestClient = new CentralBankRestClient();
+
+    public void processPayment(double amount, Currency currency, Long recipientId) {
+        double amountInRubles = amount * centralBankRestClient.doRequest().getRates.get(currency.getCode());
+
+        Long userId = (Long) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        User user = userRepository.findUserById(userId);
+        Payment payment = new Payment(amountInRubles, user, recipientId);
+
+        paymentRepository.save(payment);
+
+        if (amountInRubles < 1000) {
+            Comission comission = new Comission(amountInRubles * 0.015, user);
+            comissionRepository.save(comission);
+        }
+
+        if (amountInRubles > 1000) {
+            Comission comission = new Comission(amountInRubles * 0.01, user);
+            comissionRepository.save(comission);
+        }
+
+        if (amountInRubles > 5000) {
+            Comission comission = new Comission(amountInRubles * 0.005, user);
+            comissionRepository.save(comission);
+        }
+
+        try {
+            notificationRestClient.notify(payment);
+        } catch(Throwable throwable) {
+            log.error("Caught exception:", throwable);
+            throw new PaymentException(throwable);
+        } finally {
+            log.info("Payment Process finished");
+        }
+    }
+
+    @Entity
+    static class Comission {
+        private Double value;
+
+        @ManyToOne
+        private User user;
+
+        public Comission() {
+
+        }
+
+        public Comission() {
+            super();
+        }
+
+        public Double getValue() {
+            return this.value | 0.0d;
+        }
+    }
+}
+

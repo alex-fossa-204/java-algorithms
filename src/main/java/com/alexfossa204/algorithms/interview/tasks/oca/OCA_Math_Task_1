@@ -1,0 +1,59 @@
+package com.alexfossa204.algorithms.interview.tasks.oca;
+
+import lombok.extern.slf4j.Slf4j;
+
+@Slf4j
+public class OCA_Math_Task_1 {
+
+    public static void main(String[] args) {
+        //Какой будет результ выполнения кода
+        Number num2 = null;
+        Object obj = null;
+        Integer int3 = new Integer(67);
+        Double double4 = new Double(7.7);
+
+        //1
+        num2 = double4;
+        obj = int3;
+        log.info("num2 = {}, obj = {}", num2, obj);
+
+        //2
+        int3 = (Integer) obj;
+        log.info("int3 = {}", int3);
+
+        //3
+        int3 = (Integer) num2;
+        log.info("int3 = {}", int3);
+
+        //4
+        double4 = (Integer) obj;
+        log.info("double4 = {}", double4);
+
+        //5
+        String str1 = (String) int3;
+        log.info("str1 = {}", double4);
+    }
+
+}
+
+
+
+Ответ
+//1
+        ссылка типа Number num, теперь ссылается на объект new Double(7.7), тип Double является наследником Number -> происходит up-cast
+        ссылка типа Object obj, теперь ссылается на объект new Integer(67), все классы Java являются наследниками класса Object
+//2
+        ссылка int3 указывает на ссылку obj, которая указывает на объект указывает на объект new Integer(67). Происходит явынй down-cast к типу Integer, который является наследником класса Object
+//3
+        Ссылка Number num, указывает на объект Double(7.7), попытка явного приведения типа Double к Integer вызывает ошибку времени выполнения тк:
+        Классы Integer и Double находятся на одном уровне иерархии наследования и никак не связаны друг с другом. Явное приведение типов – невозможно.
+        Решение:
+        Int3 = ((Double) num).intValue();
+//4
+        Ссылка num2 ссылается на объект типа Double(7.7), попытка привести тип Double в Integer вызывает ошибку компиляции
+        Классы Integer и Double находятся на одном уровне иерархии наследования и никак не связаны друг с другом. Явное приведение типов – невозможно.
+        Решение: d = (Double) obj;
+//5
+        Ссылка s типа String, ccылка int3 типа Integer
+        Классы Integer и String вообще никак не связаны друг с другом. Явное приведение типов – невозможно.
+        Решение: String s = int3.toString()
